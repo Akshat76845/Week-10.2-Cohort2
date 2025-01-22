@@ -1,20 +1,24 @@
 import {PrismaClient}from "@prisma/client";
 const prisma = new PrismaClient();
 
-async function insertUser(username:string,password:string,name:string,lastName:string){
-    const res = await prisma.user.create({
+interface UpdateParams{
+    name:string;
+    lastName:string
+}
+async function updateUser(username:string,{
+    name,
+    lastName
+}:UpdateParams){
+    const res = await prisma.user.update({
+        where:{email:username},
         data:{
-            email:username,
-            password,
             name,
             lastName
-        },
-        select:{
-            id:true,
-            password:true,
-            name:true
         }
     })
-    console.log(res);
+    console.log(res)
 }
-insertUser("ak@gmail.com","password","Ak","G")
+updateUser("ak@gmail.com",{
+    name:"Aqp",
+    lastName:"Gp"
+})
